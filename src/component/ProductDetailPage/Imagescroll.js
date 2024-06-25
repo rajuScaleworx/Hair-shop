@@ -2,13 +2,21 @@ import React, {useEffect, useState} from 'react'
 import { Image, Box } from '@mantine/core';
 import { Carousel } from '@mantine/carousel';
 
-function Imagescroll() {
+function Imagescroll(props) {
+    const {productDetail}=props
     const [imagedata,setImagedata]=useState()
+    // const imagearr = [
+    //     { item: 1, image: "https://hairfairywigs.com/9744-large_default/symphony-mono-wig.jpg" },
+    //     { item: 2, image: "https://hairfairywigs.com/9745-large_default/symphony-mono-wig.jpg" },
+    //     { item: 3, image: "https://hairfairywigs.com/9746-large_default/symphony-mono-wig.jpg" },
+    //     { item: 4, image: "https://hairfairywigs.com/9747-large_default/symphony-mono-wig.jpg" },
+
+    // ]
     const imagearr = [
-        { item: 1, image: "https://hairfairywigs.com/9744-large_default/symphony-mono-wig.jpg" },
-        { item: 2, image: "https://hairfairywigs.com/9745-large_default/symphony-mono-wig.jpg" },
-        { item: 3, image: "https://hairfairywigs.com/9746-large_default/symphony-mono-wig.jpg" },
-        { item: 4, image: "https://hairfairywigs.com/9747-large_default/symphony-mono-wig.jpg" },
+        { item: 1, image: `http://localhost:8000/showfile/${productDetail.image}` },
+        { item: 2, image: `http://localhost:8000/showfile/${productDetail.image}`},
+        { item: 3, image: `http://localhost:8000/showfile/${productDetail.image}` },
+        { item: 4, image: `http://localhost:8000/showfile/${productDetail.image}` },
 
     ]
     useEffect(()=>{

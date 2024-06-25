@@ -4,10 +4,16 @@ import { IconPhoto, IconPrinter, IconCameraSelfie } from '@tabler/icons-react';
 import PersonalInformation from './persnolinformation/index';
 import AddressForm from './AddressForm/index';
 import classes from '../cartPage/ArticleCardVertical.module.css';
-
-function Checkout() {
+import CheckoutProvider from './context';
+import  PaymentPage from './Pay/index';
+function Checkout(props) {
+    const {pricedata}=props;
+    const addCustomer= ()=>{
+        
+    }
     return (
         <>
+        <CheckoutProvider  >
             <Container mt={100} w={'70%'} fluid={true}>
                 <Grid>
                     <Grid.Col span={8}>
@@ -62,7 +68,9 @@ function Checkout() {
                                 >
                                     Payment
                                 </Accordion.Control>
-                                <Accordion.Panel>Content</Accordion.Panel>
+                                <Accordion.Panel>
+                                 < PaymentPage pricedata={pricedata} />  
+                                </Accordion.Panel>
                             </Accordion.Item>
                         </Accordion>
                     </Grid.Col>
@@ -75,7 +83,7 @@ function Checkout() {
                                     Total Price:
                                 </Text>
                                 <Text className={classes.title} mb='md'>
-                                    {4 * 3000} INR
+                                    {pricedata.totalprice} INR
                                 </Text>
                             </Group>
                             <Group display='flex' justify='space-between'>
@@ -83,7 +91,7 @@ function Checkout() {
                                     ToShipping Charge:
                                 </Text>
                                 <Text className={classes.title} mb='md'>
-                                    250 INR
+                                    {pricedata?.shippingCharge ? pricedata.shippingCharge :0 } INR
                                 </Text>
                             </Group>
 
@@ -92,7 +100,7 @@ function Checkout() {
                                     Tax:
                                 </Text>
                                 <Text className={classes.title} mb='md'>
-                                    40 INR
+                                    {pricedata.tax} INR
                                 </Text>
                             </Group>
 
@@ -101,7 +109,7 @@ function Checkout() {
                                     Offer:
                                 </Text>
                                 <Text className={classes.title} mb='md'>
-                                    20 INR
+                                    {pricedata.off} INR
                                 </Text>
                             </Group>
 
@@ -111,7 +119,7 @@ function Checkout() {
                                     SUB TOTAL:
                                 </Text>
                                 <Text className={classes.title} mb='md'>
-                                    15200 INR
+                                {pricedata.realprice} INR
                                 </Text>
                             </Group>
                             {/* <Button fullWidth bg={'darkblue'} fz={20} size='md'>CHECKOUT</Button> */}
@@ -119,6 +127,7 @@ function Checkout() {
                     </Grid.Col>
                 </Grid>
             </Container>
+            </CheckoutProvider>
         </>
     )
 }

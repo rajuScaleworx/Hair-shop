@@ -36,3 +36,16 @@
     transform: rotate(360deg);
   }
 } */
+
+.mantine-Notification-title{
+  font-size: 20px !important;
+  color: #ffff !important;
+  font-weight: 600 !important;
+}
+.mantine-Notification-closeButton{
+  svg{
+    color: #ffff;
+    width: 20px !important;
+    height: 20px !important;
+  }
+}

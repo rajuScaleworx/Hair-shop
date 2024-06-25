@@ -16,9 +16,9 @@ import {
   ScrollArea,
   rem,
   useMantineTheme,
-  Title, Modal, Indicator, Avatar, Image
+  Title, Modal, Indicator, Avatar, Image, Menu
 } from '@mantine/core';
-import { useState } from 'react';
+import { useContext, useState, ref } from 'react';
 // import { MantineLogo } from '@mantinex/mantine-logo';
 import { useDisclosure } from '@mantine/hooks';
 import companylogog from '../../assets/LOGO.png';
@@ -29,11 +29,18 @@ import {
   IconChartPie3,
   IconFingerprint,
   IconCoin,
-  IconChevronDown, IconShoppingCartFilled
+  IconChevronDown, IconShoppingCartFilled, IconChevronRight,
+  IconSettings,
+  IconSearch,
+  IconPhoto,
+  IconMessageCircle,
+  IconTrash,
+  IconArrowsLeftRight
 } from '@tabler/icons-react';
 import LoginForm from '../Auth/loginPage';
 import classes from './HeaderTabs.module.css';
-
+import { useNavigate } from 'react-router-dom';
+import { CartContext } from '../../context/cartContext';
 const mockdata = [
   {
     icon: IconCode,
@@ -68,10 +75,12 @@ const mockdata = [
 ];
 
 function Header() {
+  const navigate = useNavigate()
+  const { cartNumber } = useContext(CartContext)
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] = useDisclosure(false);
   const [linksOpened, { toggle: toggleLinks }] = useDisclosure(false);
   const [loginmodal, setLoginmodal] = useState(false);
-
+  const userid = localStorage.getItem('userid') || null;
   const theme = useMantineTheme();
 
   const links = mockdata.map((item) => (
@@ -91,20 +100,53 @@ function Header() {
       </Group>
     </UnstyledButton>
   ));
+  const clickheader = (type) => {
+    navigate(`/list/${type}`)
+  }
+
+  const UserButton = (
+    ({ image, name, email, icon, ...others }) => (
+      <UnstyledButton
+        // ref={ref}
+        style={{
+          padding: 'var(--mantine-spacing-md)',
+          color: 'var(--mantine-color-text)',
+          borderRadius: 'var(--mantine-radius-sm)',
+        }}
+        {...others}
+      >
+        <Group>
+          <Avatar src={image} radius="xl" />
+
+          <div style={{ flex: 1 }}>
+            <Text size="sm" fw={500}>
+              {name}
+            </Text>
+
+            <Text c="dimmed" size="xs">
+              {email}
+            </Text>
+          </div>
+
+          {icon || <IconChevronRight size="1rem" />}
+        </Group>
+      </UnstyledButton>
+    )
+  );
 
   return (
     <>
-      <Box 
+      <Box
       //style={{ position: 'relative', zIndex: "9999",margin:'auto', background: '#FFFF' }}
       // style={{background:'#d0d0d0',position:'fixed',top:'0',bottom:'0',width:'100%',height:'60px'}}
       >
         <header className={classes.header}>
           <Group justify="space-between" w="80%" m="auto" h="100%">
             <Group h="100%" gap={0} visibleFrom="sm">
-              <a style={{ color: '#000', fontSize: rem(16) }} href="#" className={classes.link}>
+              <a style={{ color: '#000', fontSize: rem(16) }} onClick={() => clickheader('men')} className={classes.link}>
                 MEN
               </a>
-              <a style={{ color: '#000', fontSize: rem(16) }} href="#" className={classes.link}>
+              <a style={{ color: '#000', fontSize: rem(16) }} onClick={() => clickheader('women')} className={classes.link}>
                 LADIES
               </a>
               <HoverCard width={600} position="bottom" radius="md" shadow="md" withinPortal>
@@ -164,15 +206,77 @@ function Header() {
 
             </Group>
             <Group visibleFrom="sm">
-              <Indicator m={10} inline label="10" size={25} mr={30}>
+              <Indicator m={10} inline label={cartNumber} size={25} mr={30}>
                 <IconShoppingCartFilled
                   // size="sm"
                   size={40}
                   color={'#000'}
                   radius="sm"
+                  onClick={() => { navigate('/cart') }}
                 />
               </Indicator>
-              <Button size='lg' variant="default" radius='md' bg={'#000'} c={'#ffff'} fs={28} onClick={() => setLoginmodal(true)}>Log in</Button>
+              {userid ?
+                <Menu shadow="md" width={200} withArrow>
+                  <Menu.Target>
+                    <Group>
+                      <Avatar src="" radius="xl" />
+
+                      <div style={{ flex: 1 }}>
+                        <Text size="sm" fw={500}>
+                          Raju
+                        </Text>
+
+                        <Text c="dimmed" size="xs">
+                          email
+                        </Text>
+                      </div>
+
+                      {<IconChevronRight size="1rem" />}
+                    </Group>
+                    {/* <Button bg='none' c="blue">Toggle menu</Button> */}
+                  </Menu.Target>
+
+                  <Menu.Dropdown>
+                    <Menu.Label>Application</Menu.Label>
+                    <Menu.Item leftSection={<IconSettings style={{ width: rem(14), height: rem(14) }} />}>
+                      Order History
+                    </Menu.Item>
+                    <Menu.Item leftSection={<IconMessageCircle style={{ width: rem(14), height: rem(14) }} />}>
+                      Messages
+                    </Menu.Item>
+                    <Menu.Item leftSection={<IconPhoto style={{ width: rem(14), height: rem(14) }} />}>
+                      Gallery
+                    </Menu.Item>
+                    <Menu.Item
+                      leftSection={<IconSearch style={{ width: rem(14), height: rem(14) }} />}
+                      rightSection={
+                        <Text size="xs" c="dimmed">
+                          ⌘K
+                        </Text>
+                      }
+                    >
+                      Search
+                    </Menu.Item>
+
+                    <Menu.Divider />
+
+                    <Menu.Label>Danger zone</Menu.Label>
+                    <Menu.Item
+                      leftSection={<IconArrowsLeftRight style={{ width: rem(14), height: rem(14) }} />}
+                    >
+                      Transfer my data
+                    </Menu.Item>
+                    <Menu.Item
+                      color="red"
+                      leftSection={<IconTrash style={{ width: rem(14), height: rem(14) }} />}
+                    >
+                      Delete my account
+                    </Menu.Item>
+                  </Menu.Dropdown>
+                </Menu>
+                :
+                <Button size='lg' variant="default" radius='md' bg={'#000'} c={'#ffff'} fs={28} onClick={() => setLoginmodal(true)}>Log in</Button>
+              }
               {/* <Button radius='md'>Sign up</Button> */}
             </Group>
 
