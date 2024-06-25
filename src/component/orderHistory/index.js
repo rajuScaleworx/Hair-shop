@@ -90,6 +90,7 @@ function OrderHistory() {
                                 <Text c={"blue"} weight={500}>Order ID: {order.orderId}</Text>
                                 <Text fw={450} fz={20}>{moment(order.date).format('DD/MM/YYYY')}</Text>
                             </Group>
+                            
                             <ActionIcon
                                 size="xl"
                                 variant="transparent"
