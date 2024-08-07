@@ -6,7 +6,7 @@ const cookies = new Cookies();
 export default class Axios {
   get(options) {
     options.method = "get";
-    // options.headers = this.getHeaders();
+    options.headers = this.getHeaders();
     return new Promise((resolve, reject) => {
       axios(options)
         .then((response) => {
@@ -21,7 +21,7 @@ export default class Axios {
   post(options) {
     console.log("options", options);
     options.method = "POST";
-    // options.headers = options?.headers ? options.headers : this.getHeaders();
+    options.headers = options?.headers ? options.headers : this.getHeaders();
     console.log("options", options);
     return new Promise((resolve, reject) => {
       axios(options)
@@ -29,15 +29,15 @@ export default class Axios {
           resolve(response);
         })
         .catch((err) => {
-          reject(err);
+            resolve(err);
         });
     });
   }
 
   upload(options) {
     options.method = "POST";
-    // options.headers = this.getHeaders();
-    // options.headers["content-type"] = "multipart/form-data";
+    options.headers = this.getHeaders();
+    //options.headers["content-type"] = "multipart/form-data";
     return new Promise((resolve, reject) => {
       axios(options)
         .then((response) => {
@@ -51,7 +51,7 @@ export default class Axios {
 
   patch(options) {
     options.method = "PATCH";
-    // options.headers = this.getHeaders();
+    options.headers = this.getHeaders();
     return new Promise((resolve, reject) => {
       axios(options)
         .then((response) => {
@@ -65,7 +65,7 @@ export default class Axios {
 
   put(options) {
     options.method = "PUT";
-    // options.headers = this.getHeaders();
+    options.headers = this.getHeaders();
     return new Promise((resolve, reject) => {
       axios(options)
         .then((response) => {
@@ -79,7 +79,7 @@ export default class Axios {
 
   delete(options) {
     options.method = "DELETE";
-    // options.headers = this.getHeaders();
+    options.headers = this.getHeaders();
     return new Promise((resolve, reject) => {
       axios(options)
         .then((response) => {
@@ -91,10 +91,10 @@ export default class Axios {
     });
   }
 
-  // getHeaders() {
-  //   console.log(this);
-  //   return {
-  //     Authorization: `Bearer ${cookies.get("shop_admin") || undefined}`,
-  //   };
-  // }
+  getHeaders() {
+    console.log(this);
+    return {
+      Authorization: `Bearer ${cookies.get("shop_admin") || undefined}`,
+    };
+  }
  }

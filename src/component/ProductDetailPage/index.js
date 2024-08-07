@@ -24,8 +24,8 @@ const iconProps = {
     size: 18,
 };
 function DetailPage() {
-    const { cartItems,addcartproduct, findproductaddincart, addtocart, productCount, setProductCount } = useContext(CartContext)
-    console.log(cartItems)
+    const {removeFromCartitem, fetchcartproductstatus, loadCart, getproductcount, cart, cartItems, addcartproduct, findproductaddincart, addtocart, productCount, setProductCount } = useContext(CartContext)
+    console.log(cart)
     const icons = {
         left: <IconAlignLeft {...iconProps} />,
         center: <IconAlignCenter {...iconProps} />,
@@ -61,9 +61,9 @@ function DetailPage() {
         },
     });
     const defaultvalueset = (colorssetarr, sizessetarr, lengthsetarr) => {
-        const item = JSON.parse(localStorage.getItem('cartItems')) || []
-        if (item.length > 0) {
-            const item1 = item.find((item) => item.productId === params.productid)
+        // const item = JSON.parse(localStorage.getItem('cartItems')) || []
+        if (cart.length > 0) {
+            const item1 = cart.find((item) => item.productId === params.productid)
             console.log(item1)
             if (item1) {
                 form.setFieldValue("length", item1.length)
@@ -132,6 +132,10 @@ function DetailPage() {
         setProductDetail(null)
         FetchProductDetail()
     }, [])
+    useEffect(() => {
+        getproductcount(params.productid)
+
+    }, [cart])
     return (
         <>
             {productDetail ?
@@ -195,12 +199,14 @@ function DetailPage() {
                                         radius={20} variant="filled" color="darkblue" aria-label="Settings">
                                         <IconPlus style={{ width: '70%', height: '70%' }} stroke={4} />
                                     </ActionIcon>
-                                    {findproductaddincart(productDetail.id) === true ? 
-                                        <Button ml={20} bg={"darkblue"} onClick={()=>addcartproduct(productDetail)}>Add to cart</Button>
-                                        :""
+                                    {fetchcartproductstatus(params.productid) === true ?
+                                        <Button ml={20} bg={"darkblue"} onClick={() => removeFromCartitem(params.productid)}>Remove From cart</Button>
+
+                                        :
+                                        <Button ml={20} bg={"darkblue"} onClick={() => addtocart(productDetail, "inc", form.getValues())}>Add to cart</Button>
+
                                     }
                                 </Group>
-
                             </Box>
                         </Grid.Col>
                     </Grid>

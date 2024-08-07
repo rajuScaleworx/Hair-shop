@@ -6,14 +6,18 @@ import axios from 'axios';
 import ProductCartService from '../../Services/cartServices';
 import paymentService from '../../Services/paymentServices';
 import { useNavigate } from "react-router-dom";
+import { CartContext } from '../../context/cartContext';
 export const CheckoutContext = createContext();
 
 const CheckoutProvider = ({ children }) => {
     const navigate=useNavigate();
+    const {cart}=useContext(CartContext)
+
     const [userDetail, setUserDetail] = useState();
     const [addlist,setAddlist]=useState([]);
     const [list,setList]=useState([]);
     const [pricedata,setPriceData]=useState({});
+    const [openaccordinvalue,setOpenaccordinvalue]=useState("photos")
     const AddCustomer = async (values) => {
 
         console.log(values)
@@ -28,6 +32,7 @@ const CheckoutProvider = ({ children }) => {
         if (apicall.status === 201) {
             setUserDetail(apicall.data.result)
             localStorage.setItem("userid", apicall.data.result._id)
+            setOpenaccordinvalue('print')
         }
         else {
             // showing error message
@@ -52,11 +57,12 @@ const CheckoutProvider = ({ children }) => {
         data["addressid"]=apicall.data.result._id
         console.log(data)
         setUserDetail(data)
+        setOpenaccordinvalue('payment')
+
     }
     const fetchCartProductDetail=async()=>{
-        const data = JSON.parse(localStorage.getItem('cartItems')) || []
 
-        const apicall=await ProductCartService.getProductDetailBymultiId(data)
+        const apicall=await ProductCartService.getProductDetailBymultiId(cart)
         console.log(apicall)
         if(apicall.status===200){
             if(apicall.data.result.length>0){
@@ -85,6 +91,10 @@ const CheckoutProvider = ({ children }) => {
                 setPriceData(pricedatas)
             }
         }
+    }
+    const accordinonchange=(value)=>{
+        console.log(value)
+       setOpenaccordinvalue(value)
     }
     const paymentsuccess= async(apidata) =>{
         const apicall=await paymentService.successPayment(apidata);
@@ -172,7 +182,7 @@ const CheckoutProvider = ({ children }) => {
         fetchUserdetailbyid()
     }, [])
     return (
-        <CheckoutContext.Provider value={{addlist, handlePayment, userDetail, AddCustomer, addcustomerAddress }}>
+        <CheckoutContext.Provider value={{accordinonchange,openaccordinvalue,addlist, handlePayment, userDetail, AddCustomer, addcustomerAddress }}>
             {children}
         </CheckoutContext.Provider>
     );

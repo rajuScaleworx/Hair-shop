@@ -76,7 +76,7 @@ const mockdata = [
 
 function Header() {
   const navigate = useNavigate()
-  const { cartNumber } = useContext(CartContext)
+  const { cartNumber,cart } = useContext(CartContext)
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] = useDisclosure(false);
   const [linksOpened, { toggle: toggleLinks }] = useDisclosure(false);
   const [loginmodal, setLoginmodal] = useState(false);
@@ -206,7 +206,7 @@ function Header() {
 
             </Group>
             <Group visibleFrom="sm">
-              <Indicator m={10} inline label={cartNumber} size={25} mr={30}>
+              <Indicator m={10} inline label={cart.length} size={25} mr={30}>
                 <IconShoppingCartFilled
                   // size="sm"
                   size={40}

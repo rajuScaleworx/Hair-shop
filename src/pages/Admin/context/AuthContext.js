@@ -1,7 +1,9 @@
 import React, { createContext, useState } from 'react';
 import authService from '../../../Services/authservices';
 import { useNavigate } from 'react-router-dom';
+import Cookies from "universal-cookie";
 
+const cookies = new Cookies();
 // Create context
 export const AuthContext = createContext();
 
@@ -15,7 +17,14 @@ export const AuthContext = createContext();
     const response=await authService.loginadmin({ email, password })
     if (response.status===200) {
       console.log(response)
-      navigate('/admindashboard')
+      if(response.status===200){
+        if(response.data.statusCode===200){
+          cookies.set("shop_admin",response.data.token)
+          navigate('/admindashboard')
+        }
+      }
+      
+      
       // setUser(userData);
     } else {
       throw new Error('Failed to login');

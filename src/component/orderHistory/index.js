@@ -58,7 +58,8 @@ function OrderHistory() {
                                 name: item.name,
                                 image: item.image,
                                 price: item.price,
-                                status: 'Pending'
+                                status: 'Pending',
+                                quantity:item.quantity
                             })
                         })
                         setdata.push(orderdata)
@@ -103,6 +104,8 @@ function OrderHistory() {
                                     <tr>
                                         <th style={{ textAlign: 'left', padding: '8px', fontSize: "16px", color:"grey" }}>ITEM</th>
                                         <th style={{ textAlign: 'left', padding: '8px', fontSize: "16px", color:"grey" }}>PRICE</th>
+                                        <th style={{ textAlign: 'left', padding: '8px', fontSize: "16px", color:"grey" }}>QUANTITY</th>
+
                                         <th style={{ textAlign: 'left', padding: '8px', fontSize: "16px", color:"grey" }}>STATUS</th>
                                     </tr>
                                 </thead>
@@ -115,7 +118,9 @@ function OrderHistory() {
                                                     <Text style={{ color: '#1c7ed6',lineHeight:"1.5" }}>{item.name}</Text> {/* Primary color for item names */}
                                                     </Group>
                                             </td>
-                                            <td style={{ textAlign: 'left', padding: '8px', verticalAlign: 'top', fontWeight: "500", fontSize: "20px" }}>{item.price}</td>
+                                            <td style={{ textAlign: 'left', padding: '8px', verticalAlign: 'top', fontWeight: "500", fontSize: "20px" }}>{Number(item.price)* item.quantity}</td>
+                                            <td style={{ textAlign: 'left', padding: '8px', verticalAlign: 'top', fontWeight: "500", fontSize: "20px" }}>{item.quantity}</td>
+
                                             <td style={{ textAlign: 'left', padding: '8px', verticalAlign: 'top' }}>
                                                 <Badge color={item.status === 'Delivered' ? 'green' : 'yellow'}>
                                                     {item.status}

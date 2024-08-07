@@ -78,6 +78,6 @@ export const router=createBrowserRouter([
       path:"/dashboard",
       element:<DashBoarPage />, 
     },
-    {path:"admindashboard",element:<AdminDashBoard />}
+    {path:"/admindashboard",element:<AdminDashBoard />}
   ]);
   

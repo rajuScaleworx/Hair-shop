@@ -1,9 +1,10 @@
-import React from 'react'
+import React from 'react';
 
 function DashBoard() {
   return (
-    <div>index</div>
+    <>
+      <span>hfdjesijh </span>
+    </>
   )
 }
-
 export default DashBoard;
